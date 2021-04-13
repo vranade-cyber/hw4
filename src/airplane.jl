@@ -20,3 +20,8 @@ function set_mesh!(vis, ::YakPlane; color=nothing, scale=0.15)
     setobject!(vis["robot"]["geom"], obj, mat)
     settransform!(vis["robot"]["geom"], compose(Translation(0,0,0.07),LinearMap( RotY(pi/2)*RotZ(-pi/2) * scale)))
 end
+
+function RobotDynamics.discrete_jacobian!(::Type{Q}, F, model::YakPlane, 
+        x, u, t, dt) where Q <: RobotDynamics.Explicit
+    discrete_jacobian!(Q, F, model, StaticKnotPoint(x,u,dt,t))
+end
